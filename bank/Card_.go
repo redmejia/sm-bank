@@ -45,7 +45,6 @@ func createCard(account *Account) (clientCard *card) {
 		cardType:   cardType,
 		cardNumber: cardNumber,
 		cvNumber:   cv,
-		Account:    *account,
 	}
 	return
 }

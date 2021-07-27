@@ -2,3 +2,6 @@
 
 # nvin and vim saving errors
 :w
+
+# database env
+dbenv.sh
