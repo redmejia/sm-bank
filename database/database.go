@@ -13,11 +13,12 @@ import (
 var DB *sql.DB
 
 const (
-	OpenConns = 10
-	IdleConns = 3
-	LifeTime  = 60 * time.Second
+	openConns = 10
+	idleConns = 3
+	lifeTime  = 60 * time.Second
 )
 
+// dbConnect create database connection
 func DbConnect() (*sql.DB, error) {
 	PORT, _ := strconv.Atoi(os.Getenv("PORT"))
 	conn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
@@ -29,9 +30,9 @@ func DbConnect() (*sql.DB, error) {
 		return nil, err
 	}
 
-	DB.SetMaxOpenConns(OpenConns)
-	DB.SetMaxIdleConns(IdleConns)
-	DB.SetConnMaxLifetime(LifeTime)
+	DB.SetMaxOpenConns(openConns)
+	DB.SetMaxIdleConns(idleConns)
+	DB.SetConnMaxLifetime(lifeTime)
 
 	return DB, nil
 }
