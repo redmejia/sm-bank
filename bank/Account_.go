@@ -12,5 +12,6 @@ func (a *Account) Save() {
 		fmt.Println("ERROR PING ACCOUNT ", err)
 	}
 
-	fmt.Println("OK ACCOUNT")
+	fmt.Println("name ", a.FirstName)
+	fmt.Println("last name ", a.LastName)
 }

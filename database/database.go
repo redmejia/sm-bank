@@ -24,6 +24,7 @@ func DbConnect() (*sql.DB, error) {
 	conn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
 		os.Getenv("HOSTNAME"), PORT, os.Getenv("USER"), os.Getenv("PASSWORD"),
 		os.Getenv("DBNAME"), os.Getenv("SSLMODE"))
+
 	var err error
 	DB, err = sql.Open("postgres", conn)
 	if err != nil {

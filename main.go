@@ -2,19 +2,20 @@ package main
 
 import (
 	"log"
+	"net/http"
 
-	"github.com/smbank/bank"
 	"github.com/smbank/database"
+	"github.com/smbank/handlers"
 )
 
 func main() {
+
 	db, err := database.DbConnect()
 	if err != nil {
 		log.Println("ERROR DB ", err)
 	}
 	defer db.Close()
 
-	acc := bank.Account{ClID: 53, FirstName: "Reynaldo", LastName: "The king", Address: "1 11 "}
-
-	acc.Save()
+	http.HandleFunc("/", handlers.HandleAccount)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
