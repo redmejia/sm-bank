@@ -11,10 +11,9 @@ import (
 func HandleAccount(w http.ResponseWriter, r *http.Request) {
 	var account bank.IBank = &bank.Account{}
 	data := json.NewDecoder(r.Body)
-	err := data.Decode(&account)
+	err := data.Decode(account)
 	if err != nil {
 		log.Println("Data ", err)
 	}
-
 	account.Save()
 }

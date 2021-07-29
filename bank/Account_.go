@@ -15,3 +15,8 @@ func (a *Account) Save() {
 	fmt.Println("name ", a.FirstName)
 	fmt.Println("last name ", a.LastName)
 }
+
+func (a *Account) GetInfo() {
+	fmt.Println("Name ", a.FirstName)
+	fmt.Println("Name ", a.LastName)
+}
