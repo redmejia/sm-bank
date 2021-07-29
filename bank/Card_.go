@@ -36,7 +36,7 @@ func generateCvNumber() (cv uint8) {
 }
 
 // createCard ... this can take Account
-func createCard(account *Account) (clientCard *card) {
+func createCard() (clientCard *card) {
 	// generate the cards here.
 	var cardType string = "debit"
 	var cardNumber string = generateCard()
