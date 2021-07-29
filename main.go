@@ -16,7 +16,7 @@ func main() {
 	}
 	defer db.Close()
 
-	http.HandleFunc("/", handlers.HandleAccount)
+	http.HandleFunc("/v1/account", handlers.HandleAccount)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
 }

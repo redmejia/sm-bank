@@ -24,9 +24,7 @@ func (a *Account) Save() {
 		a.LastName,
 		a.Address,
 	)
-	if err != nil {
-		log.Println(err)
-	}
+	checkErr(err)
 
 	newCard := createCard()
 
@@ -43,9 +41,7 @@ func (a *Account) Save() {
 		newCard.cardNumber,
 		newCard.cvNumber,
 	)
-	if err != nil {
-		log.Println(err)
-	}
+	checkErr(err)
 
 	var initBalance float64 = 0
 	// new checking account and basic information
@@ -62,9 +58,7 @@ func (a *Account) Save() {
 		newCard.cardNumber,
 		newCard.cvNumber,
 	)
-	if err != nil {
-		log.Println(err)
-	}
+	checkErr(err)
 
 	// new savin account and basic information
 	_, err = tx.Exec(`
@@ -80,14 +74,10 @@ func (a *Account) Save() {
 		newCard.cardNumber,
 		newCard.cvNumber,
 	)
-	if err != nil {
-		log.Println(err)
-	}
+	checkErr(err)
 
 	err = tx.Commit()
-	if err != nil {
-		log.Println(err)
-	}
+	checkErr(err)
 }
 
 func (a *Account) GetInfo() {
