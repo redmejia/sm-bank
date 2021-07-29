@@ -1,7 +1,10 @@
 .md
 
-# nvin and vim saving errors
+# nvin and vim savig double command 
 :w
 
 # database env
 .dbenv
+
+# tables 
+/db
