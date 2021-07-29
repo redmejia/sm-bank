@@ -4,4 +4,4 @@
 :w
 
 # database env
-dbenv
+dbenv.sh
