@@ -2,16 +2,14 @@ package bank
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/smbank/database"
+	"github.com/smbank/logers"
 )
 
 func (a *Account) Save() {
 	tx, err := database.DB.Begin()
-	if err != nil {
-		log.Println(err)
-	}
+	logers.CheckErrLog(err)
 	defer tx.Rollback()
 
 	// client basic information
@@ -24,7 +22,7 @@ func (a *Account) Save() {
 		a.LastName,
 		a.Address,
 	)
-	checkErr(err)
+	logers.CheckErrLog(err)
 
 	newCard := createCard()
 
@@ -41,7 +39,7 @@ func (a *Account) Save() {
 		newCard.cardNumber,
 		newCard.cvNumber,
 	)
-	checkErr(err)
+	logers.CheckErrLog(err)
 
 	var initBalance float64 = 0
 	// new checking account and basic information
@@ -58,7 +56,7 @@ func (a *Account) Save() {
 		newCard.cardNumber,
 		newCard.cvNumber,
 	)
-	checkErr(err)
+	logers.CheckErrLog(err)
 
 	// new savin account and basic information
 	_, err = tx.Exec(`
@@ -74,10 +72,10 @@ func (a *Account) Save() {
 		newCard.cardNumber,
 		newCard.cvNumber,
 	)
-	checkErr(err)
+	logers.CheckErrLog(err)
 
 	err = tx.Commit()
-	checkErr(err)
+	logers.CheckErrLog(err)
 }
 
 func (a *Account) GetInfo() {
