@@ -3,5 +3,10 @@
 # clean term
 clear 
 
-# run serv
+echo "set db env"
+source .dbenv
+
+echo "running server"
 go run *.*go
+
+
