@@ -8,8 +8,10 @@ import (
 )
 
 func (a *Account) Save() {
+	log := logers.NewLogers()
+
 	tx, err := database.DB.Begin()
-	logers.CheckErrLog(err)
+	log.CheckDBErr(err)
 	defer tx.Rollback()
 
 	// client basic information
@@ -22,7 +24,7 @@ func (a *Account) Save() {
 		a.LastName,
 		a.Address,
 	)
-	logers.CheckErrLog(err)
+	log.CheckDBErr(err)
 
 	newCard := createCard()
 
@@ -39,7 +41,7 @@ func (a *Account) Save() {
 		newCard.cardNumber,
 		newCard.cvNumber,
 	)
-	logers.CheckErrLog(err)
+	log.CheckDBErr(err)
 
 	var initBalance float64 = 0
 	// new checking account and basic information
@@ -56,7 +58,7 @@ func (a *Account) Save() {
 		newCard.cardNumber,
 		newCard.cvNumber,
 	)
-	logers.CheckErrLog(err)
+	log.CheckDBErr(err)
 
 	// new savin account and basic information
 	_, err = tx.Exec(`
@@ -72,10 +74,10 @@ func (a *Account) Save() {
 		newCard.cardNumber,
 		newCard.cvNumber,
 	)
-	logers.CheckErrLog(err)
+	log.CheckDBErr(err)
 
 	err = tx.Commit()
-	logers.CheckErrLog(err)
+	log.CheckDBErr(err)
 }
 
 func (a *Account) GetInfo() {

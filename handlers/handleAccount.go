@@ -10,10 +10,11 @@ import (
 
 func HandleAccount(w http.ResponseWriter, r *http.Request) {
 	var account bank.IBank = &bank.Account{}
+	log := logers.NewLogers()
 	data := json.NewDecoder(r.Body)
 	err := data.Decode(&account)
-	logers.CheckErrLog(err)
+	log.CheckErr(err)
 
 	account.Save()
-	logers.LogSuccess("New account was created")
+	log.LogSuccess("New account was created")
 }

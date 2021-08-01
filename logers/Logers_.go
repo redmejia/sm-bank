@@ -1,20 +1,22 @@
 package logers
 
-import (
-	"log"
-	"os"
-)
-
-func CheckErrLog(err error) {
-	var srv BankServLog
-	srv.Err = log.New(os.Stdout, "ERROR ", log.Ldate|log.Ltime)
+// CheckDBErr for checking database errors
+func (s *BankServLog) CheckDBErr(err error) {
 	if err != nil {
-		srv.Err.Fatal(err)
+		s.DBErr.Fatal(err)
+	}
+
+}
+
+// CheckErr check errors
+func (s *BankServLog) CheckErr(err error) {
+	if err != nil {
+		s.Err.Println(err)
+		return
 	}
 }
 
-func LogSuccess(msg string) {
-	var srv BankServLog
-	srv.Success = log.New(os.Stdout, "SUCCESS ", log.Ldate|log.Ltime)
-	srv.Success.Println(msg)
+// LogSuccess diplay any success request
+func (s *BankServLog) LogSuccess(msg string) {
+	s.Success.Println(msg)
 }

@@ -6,17 +6,15 @@ import (
 
 	"github.com/smbank/database"
 	"github.com/smbank/handlers"
+	"github.com/smbank/logers"
 )
 
 func main() {
-
+	loger := logers.NewLogers()
 	db, err := database.DbConnect()
-	if err != nil {
-		log.Println("ERROR DB ", err)
-	}
+	loger.CheckDBErr(err)
 	defer db.Close()
 
 	http.HandleFunc("/v1/account", handlers.HandleAccount)
 	log.Fatal(http.ListenAndServe(":8080", nil))
-
 }
