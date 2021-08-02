@@ -1,10 +1,20 @@
 package handlers
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
+
+	"github.com/smbank/bank"
+	"github.com/smbank/logers"
 )
 
-func handleTransaction(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "hello world")
+func HandleTransaction(w http.ResponseWriter, r *http.Request) {
+	log := logers.NewLogers()
+
+	var transaction bank.Transaction
+	data := json.NewDecoder(r.Body)
+	err := data.Decode(&transaction)
+	log.CheckErr(err)
+	transaction.Deposit(w)
+
 }

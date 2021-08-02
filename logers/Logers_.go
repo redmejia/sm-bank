@@ -1,9 +1,10 @@
 package logers
 
-// CheckDBErr for checking database errors
+// CheckDBErr for checking database errors exit from running server
 func (s *BankServLog) CheckDBErr(err error) {
 	if err != nil {
-		s.DBErr.Fatal(err)
+		s.DBErr.Println(err)
+		return
 	}
 
 }
