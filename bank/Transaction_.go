@@ -50,6 +50,7 @@ func makeDepo(t *Transaction, retriveQuery, updateQuery string, w http.ResponseW
 		data := json.NewEncoder(w)
 		err = data.Encode(depoReport)
 		logr.CheckErr(err)
+		logr.LogSuccess("Transaction was made")
 	}
 
 	err = tx.Commit()
