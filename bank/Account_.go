@@ -7,7 +7,7 @@ import (
 	"github.com/smbank/logers"
 )
 
-func (a *Account) Save() {
+func (a Account) Save() {
 	log := logers.NewLogers()
 
 	tx, err := database.DB.Begin()
@@ -16,9 +16,9 @@ func (a *Account) Save() {
 
 	// client basic information
 	_, err = tx.Exec(`
-		INSERT INTO 
+		INSERT INTO
 			clients (first_name, last_name, address)
-		VALUES 
+		VALUES
 			($1, $2, $3)`,
 		a.FirstName,
 		a.LastName,
@@ -80,7 +80,9 @@ func (a *Account) Save() {
 	log.CheckDBErr(err)
 }
 
-func (a *Account) GetInfo() {
+func (a Account) GetInfo() {
+	fmt.Println("Display account info")
 	fmt.Println("Name ", a.FirstName)
-	fmt.Println("Name ", a.LastName)
+	fmt.Println("Last Name ", a.LastName)
+	fmt.Println("Address", a.Address)
 }

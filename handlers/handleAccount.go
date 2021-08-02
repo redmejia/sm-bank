@@ -11,7 +11,7 @@ import (
 func HandleAccount(w http.ResponseWriter, r *http.Request) {
 	log := logers.NewLogers()
 
-	var account bank.IBank = &bank.Account{}
+	var account bank.Account
 	data := json.NewDecoder(r.Body)
 	err := data.Decode(&account)
 	log.CheckErr(err)

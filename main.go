@@ -16,6 +16,7 @@ func main() {
 	defer db.Close()
 
 	http.HandleFunc("/v1/account", handlers.HandleAccount)
-	http.HandleFunc("/v1/transaction", handlers.HandleTransaction)
+	http.HandleFunc("/v1/deposit/transaction", handlers.HandleDeposit)
+	http.HandleFunc("/v1/withdraw/transaction", handlers.HandleWithdraw)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
