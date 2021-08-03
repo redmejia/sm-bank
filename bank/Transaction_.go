@@ -139,12 +139,12 @@ func makeWithdraw(t *Transaction, retriveQuery, updateQuery string, w http.Respo
 			logr.CheckDBErr(err)
 
 			var withdrawReport = struct {
-				Depo            bool    `json:"depo"`
+				Withdraw        bool    `json:"withdraw"`
 				WithdrawFromAcc string  `json:"withdraw_from_acc"`
 				Amount          float64 `json:"amount"`
 				NewBalance      float64 `json:"new_balance"`
 			}{
-				Depo:            true,
+				Withdraw:        true,
 				WithdrawFromAcc: t.AccountType,
 				Amount:          t.Amount,
 				NewBalance:      newBalance,
@@ -189,6 +189,8 @@ func (t Transaction) Withdraw(w http.ResponseWriter) {
 		makeWithdraw(&t, retriveStm, updateStm, w)
 	}
 }
+
+func (t Transaction) Save() {}
 
 func (t Transaction) GetInfo() {
 	fmt.Println("Diplay transaction info")

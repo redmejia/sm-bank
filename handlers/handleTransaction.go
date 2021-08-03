@@ -8,21 +8,28 @@ import (
 	"github.com/smbank/logers"
 )
 
-func HandleDeposit(w http.ResponseWriter, r *http.Request) {
-	log := logers.NewLogers()
+var logr = logers.NewLogers()
+var transaction bank.IBank
 
-	var transaction bank.Transaction
+func HandleDeposit(w http.ResponseWriter, r *http.Request) {
+	transaction = &bank.Transaction{}
 	data := json.NewDecoder(r.Body)
 	err := data.Decode(&transaction)
-	log.CheckErr(err)
+	logr.CheckErr(err)
 	transaction.Deposit(w)
-
+	logr.InfoLog(r)
 }
 
 func HandleWithdraw(w http.ResponseWriter, r *http.Request) {
-	logr := logers.NewLogers()
+	transaction = &bank.Transaction{}
+	data := json.NewDecoder(r.Body)
+	err := data.Decode(&transaction)
+	logr.CheckErr(err)
+	transaction.Withdraw(w)
+}
 
-	var transaction bank.IBank = &bank.Transaction{}
+func HandlePurchase(w http.ResponseWriter, r *http.Request) {
+	transaction = &bank.Purchase{}
 	data := json.NewDecoder(r.Body)
 	err := data.Decode(&transaction)
 	logr.CheckErr(err)

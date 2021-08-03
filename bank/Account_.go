@@ -80,6 +80,10 @@ func (a Account) Save() {
 	log.CheckDBErr(err)
 }
 
+// no used on Account type
+func (t Account) Deposit()  {}
+func (t Account) Withdraw() {}
+
 func (a Account) GetInfo() {
 	fmt.Println("Display account info")
 	fmt.Println("Name ", a.FirstName)
