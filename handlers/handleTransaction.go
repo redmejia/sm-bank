@@ -16,8 +16,9 @@ func HandleDeposit(w http.ResponseWriter, r *http.Request) {
 	data := json.NewDecoder(r.Body)
 	err := data.Decode(&transaction)
 	logr.CheckErr(err)
-	transaction.Deposit(w)
+
 	logr.InfoLog(r)
+	transaction.Deposit(w)
 }
 
 func HandleWithdraw(w http.ResponseWriter, r *http.Request) {
@@ -25,6 +26,8 @@ func HandleWithdraw(w http.ResponseWriter, r *http.Request) {
 	data := json.NewDecoder(r.Body)
 	err := data.Decode(&transaction)
 	logr.CheckErr(err)
+
+	logr.InfoLog(r)
 	transaction.Withdraw(w)
 }
 
@@ -33,5 +36,7 @@ func HandlePurchase(w http.ResponseWriter, r *http.Request) {
 	data := json.NewDecoder(r.Body)
 	err := data.Decode(&transaction)
 	logr.CheckErr(err)
+
+	logr.InfoLog(r)
 	transaction.Withdraw(w)
 }

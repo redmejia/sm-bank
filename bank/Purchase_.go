@@ -1,6 +1,7 @@
 package bank
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -16,7 +17,7 @@ func makePurchase(t *Purchase, retriveQuery, updateQuery string, w http.Response
 	logr.CheckDBErr(err)
 	defer tx.Rollback()
 
-	row := tx.QueryRow(retriveQuery, t.Card)
+	row := tx.QueryRow(retriveQuery, t.Card, t.CvNumber)
 
 	var clientInfo Transaction
 	err = row.Scan(
@@ -36,26 +37,26 @@ func makePurchase(t *Purchase, retriveQuery, updateQuery string, w http.Response
 			log.Println("balance is less than amount")
 		} else if clientInfo.Balance > t.PurchaseAmount {
 			newBalance := clientInfo.Balance - t.PurchaseAmount
-			_, err := tx.Exec(updateQuery, newBalance, clientInfo.Card)
+			_, err := tx.Exec(updateQuery, newBalance, clientInfo.Card, clientInfo.CvNumber)
 			logr.CheckDBErr(err)
 
-			// var withdrawReport = struct {
-			// 	Withdraw        bool    `json:"withdraw"`
-			// 	WithdrawFromAcc string  `json:"withdraw_from_acc"`
-			// 	Amount          float64 `json:"amount"`
-			// 	NewBalance      float64 `json:"new_balance"`
-			// }{
-			// 	Withdraw:        true,
-			// 	WithdrawFromAcc: t.AccountType,
-			// 	Amount:          t.Amount,
-			// 	NewBalance:      newBalance,
-			// }
+			var requestReport = struct {
+				Withdraw       bool    `json:"withdraw"`
+				TransationType string  `json:"transation_type"`
+				Amount         float64 `json:"amount"`
+				NewBalance     float64 `json:"new_balance"`
+			}{
+				Withdraw:       true,
+				TransationType: t.TransactionType,
+				Amount:         t.PurchaseAmount,
+				NewBalance:     newBalance,
+			}
 
 			w.Header().Add("Content-Type", "application/json")
 
-			// data := json.NewEncoder(w)
-			// err = data.Encode(withdrawReport)
-			// logr.CheckErr(err)
+			data := json.NewEncoder(w)
+			err = data.Encode(requestReport)
+			logr.CheckErr(err)
 			logr.LogSuccess("Transaction was made")
 		}
 
@@ -67,13 +68,32 @@ func makePurchase(t *Purchase, retriveQuery, updateQuery string, w http.Response
 }
 
 func (p Purchase) Withdraw(w http.ResponseWriter) {
-	fmt.Println("pruchase here", p.Card)
-	w.Header().Add("Content-Type", "application/json")
+	retriveStm := `
+	 		SELECT
+	 			balance,
+	 			card_number,
+	 			card_cv
+	 		FROM
+	 			checking_acc_type
+	 		WHERE
+	 			card_number = $1
+	 		AND card_cv = $2
+	 		`
+	updateStm := `
+	 		UPDATE
+	 			checking_acc_type
+	 		SET
+	 			balance = $1
+	 		WHERE
+	 			card_number = $2 AND card_cv = $3
+	 		`
+
+	makePurchase(&p, retriveStm, updateStm, w)
 }
 
 func (p Purchase) Deposit(w http.ResponseWriter) {}
 func (p Purchase) Save()                         {}
 
 func (p Purchase) GetInfo() {
-	fmt.Println("purchase", p.PurchaseAmount)
+	fmt.Println("purchase", p.PurchaseAmount, p.Card, p.CvNumber, p.TransactionType)
 }
