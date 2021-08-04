@@ -2,6 +2,7 @@ package bank
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/smbank/database"
 	"github.com/smbank/logers"
@@ -81,8 +82,8 @@ func (a Account) Save() {
 }
 
 // no used on Account type
-func (t Account) Deposit()  {}
-func (t Account) Withdraw() {}
+func (t Account) Deposit(w http.ResponseWriter)  {}
+func (t Account) Withdraw(w http.ResponseWriter) {}
 
 func (a Account) GetInfo() {
 	fmt.Println("Display account info")

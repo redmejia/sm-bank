@@ -5,16 +5,15 @@ import (
 	"net/http"
 
 	"github.com/smbank/bank"
-	"github.com/smbank/logers"
 )
 
 func HandleAccount(w http.ResponseWriter, r *http.Request) {
-	log := logers.NewLogers()
-
-	var account bank.Account
+	client = &bank.Account{}
 	data := json.NewDecoder(r.Body)
-	err := data.Decode(&account)
-	log.CheckErr(err)
+	err := data.Decode(&client)
+	logr.CheckErr(err)
 
-	account.Save()
+	logr.InfoLog(r)
+	client.GetInfo()
+	client.Save()
 }
