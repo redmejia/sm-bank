@@ -52,10 +52,19 @@ func makePurchase(t *Purchase, retriveQuery, updateQuery string, w http.Response
 				NewBalance:     newBalance,
 			}
 
+			var purchaseStatus = struct {
+				Status          string `json:"status"`
+				TransactionCode uint8  `json:"transaction_code"`
+			}{
+				Status:          "APROVED",
+				TransactionCode: 02,
+			}
+
+			log.Println("purchase Response", requestReport)
 			w.Header().Add("Content-Type", "application/json")
 
 			data := json.NewEncoder(w)
-			err = data.Encode(requestReport)
+			err = data.Encode(purchaseStatus)
 			logr.CheckErr(err)
 			logr.LogSuccess("Transaction was made")
 		}

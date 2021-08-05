@@ -15,7 +15,7 @@ func main() {
 	defer db.Close()
 
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":8081", // bank serv port
 		Handler: routes.Routes(),
 	}
 
