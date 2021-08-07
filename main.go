@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/smbank/database"
@@ -19,6 +20,7 @@ func main() {
 		Handler: routes.Routes(),
 	}
 
+	log.Println("Server running on port :8081")
 	err = srv.ListenAndServe()
 	loger.CheckErr(err)
 }

@@ -5,8 +5,9 @@ clear
 
 echo "set db env"
 source .dbenv
+echo "...done"
 
-echo "running server"
+echo "Run server"
 go run *.*go
 
 
