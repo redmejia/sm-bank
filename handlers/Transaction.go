@@ -36,3 +36,13 @@ func HandlePurchase(w http.ResponseWriter, r *http.Request) {
 	logr.InfoLog(r)
 	client.Withdraw(w)
 }
+
+func HandleRefound(w http.ResponseWriter, r *http.Request) {
+	client = &bank.Purchase{}
+	data := json.NewDecoder(r.Body)
+	err := data.Decode(&client)
+	logr.CheckErr(err)
+
+	logr.InfoLog(r)
+	client.Deposit(w)
+}

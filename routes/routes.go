@@ -14,6 +14,7 @@ func Routes() http.Handler {
 	mux.HandleFunc("/v1/deposit/transaction", handlers.HandleDeposit)
 	mux.HandleFunc("/v1/withdraw/transaction", handlers.HandleWithdraw)
 	mux.HandleFunc("/v1/purchase/transaction", handlers.HandlePurchase)
+	mux.HandleFunc("/v1/refound/transaction", handlers.HandleRefound)
 
 	return mux
 }

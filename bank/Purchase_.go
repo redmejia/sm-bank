@@ -76,6 +76,7 @@ func makePurchase(t *Purchase, retriveQuery, updateQuery string, w http.Response
 
 }
 
+// Withdraw make purchase withdraw amount from checking account
 func (p Purchase) Withdraw(w http.ResponseWriter) {
 	retriveStm := `
 	 		SELECT
@@ -100,8 +101,56 @@ func (p Purchase) Withdraw(w http.ResponseWriter) {
 	makePurchase(&p, retriveStm, updateStm, w)
 }
 
-func (p Purchase) Deposit(w http.ResponseWriter) {}
-func (p Purchase) Save()                         {}
+// Deposit an order were cancel refound deposit amount back to checking account
+func (p Purchase) Deposit(w http.ResponseWriter) {
+	logr := logers.NewLogers()
+
+	tx, err := database.DB.Begin()
+	logr.CheckDBErr(err)
+	defer tx.Rollback()
+
+	var purchaseInfo Purchase
+	row := tx.QueryRow(`
+			SELECT
+	 			balance,
+	 			card_number,
+	 			card_cv
+	 		FROM
+	 			checking_acc_type
+	 		WHERE
+	 			card_number = $1
+	 		AND card_cv = $2
+
+	`, p.Card, p.CvNumber)
+
+	err = row.Scan(
+		&purchaseInfo.Balance,
+		&purchaseInfo.Card,
+		&purchaseInfo.CvNumber,
+	)
+	logr.CheckDBErr(err)
+
+	refound := purchaseInfo.Balance + p.Refound
+
+	_, err = tx.Exec(`
+	 		UPDATE
+	 			checking_acc_type
+	 		SET
+	 			balance = $1
+	 		WHERE
+	 			card_number = $2 AND card_cv = $3
+			`, refound, purchaseInfo.Card, purchaseInfo.CvNumber,
+	)
+	logr.CheckDBErr(err)
+	log.Println("REFOUND WAS MADE.")
+
+	err = tx.Commit()
+	logr.CheckDBErr(err)
+
+}
+
+//Save
+func (p Purchase) Save() {}
 
 func (p Purchase) GetInfo() {
 	fmt.Println("purchase", p.PurchaseAmount, p.Card, p.CvNumber, p.TransactionType)
