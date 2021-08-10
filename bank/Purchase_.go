@@ -76,7 +76,7 @@ func makePurchase(t *Purchase, retriveQuery, updateQuery string, w http.Response
 
 }
 
-// Withdraw make purchase withdraw amount from checking account
+// Withdraw purchase amount will be take from checking account
 func (p Purchase) Withdraw(w http.ResponseWriter) {
 	retriveStm := `
 	 		SELECT
@@ -101,7 +101,7 @@ func (p Purchase) Withdraw(w http.ResponseWriter) {
 	makePurchase(&p, retriveStm, updateStm, w)
 }
 
-// Deposit an order were cancel refound deposit amount back to checking account
+// Deposit an order were cancel, the refound amount will be deposit to checking account
 func (p Purchase) Deposit(w http.ResponseWriter) {
 	logr := logers.NewLogers()
 	var transaction = Transaction{Card: p.Card, CvNumber: p.CvNumber, Amount: p.Refound}
