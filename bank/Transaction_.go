@@ -11,7 +11,7 @@ import (
 )
 
 // makeDeop make deposit to save or checking take a retrive bank account and make the update with the new balance
-func makeDepo(t *Transaction, retriveQuery, updateQuery string, w http.ResponseWriter) {
+func (t Transaction) makeDepo(retriveQuery, updateQuery string, w http.ResponseWriter) {
 	logr := logers.NewLogers()
 
 	tx, err := database.DB.Begin()
@@ -80,7 +80,8 @@ func (t Transaction) Deposit(w http.ResponseWriter) {
 	 		WHERE
 	 			card_number = $2 AND card_cv = $3
 	 		`
-		makeDepo(&t, retriveStm, updateStm, w)
+		t.makeDepo(retriveStm, updateStm, w)
+		// makeDepo(retriveStm, updateStm, w)
 
 	case "saving":
 		retriveStm := `
@@ -102,11 +103,13 @@ func (t Transaction) Deposit(w http.ResponseWriter) {
 	 		WHERE
 	 			card_number = $2 AND card_cv = $3
 	 		`
-		makeDepo(&t, retriveStm, updateStm, w)
+
+		t.makeDepo(retriveStm, updateStm, w)
+		// makeDepo(&t, retriveStm, updateStm, w)
 	}
 }
 
-func makeWithdraw(t *Transaction, retriveQuery, updateQuery string, w http.ResponseWriter) {
+func (t Transaction) makeWithdraw(retriveQuery, updateQuery string, w http.ResponseWriter) {
 	logr := logers.NewLogers()
 
 	tx, err := database.DB.Begin()
@@ -186,7 +189,8 @@ func (t Transaction) Withdraw(w http.ResponseWriter) {
 	  		WHERE
 	  			card_number = $2
 	  		`
-		makeWithdraw(&t, retriveStm, updateStm, w)
+		t.makeWithdraw(retriveStm, updateStm, w)
+		// makeWithdraw(&t, retriveStm, updateStm, w)
 	}
 }
 

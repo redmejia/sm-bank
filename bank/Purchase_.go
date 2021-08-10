@@ -104,14 +104,9 @@ func (p Purchase) Withdraw(w http.ResponseWriter) {
 // Deposit an order were cancel refound deposit amount back to checking account
 func (p Purchase) Deposit(w http.ResponseWriter) {
 	logr := logers.NewLogers()
-
-	tx, err := database.DB.Begin()
-	logr.CheckDBErr(err)
-	defer tx.Rollback()
-
-	var purchaseInfo Purchase
-	row := tx.QueryRow(`
-			SELECT
+	var transaction = Transaction{Card: p.Card, CvNumber: p.CvNumber, Amount: p.Refound}
+	retriveStm := `
+	 		SELECT
 	 			balance,
 	 			card_number,
 	 			card_cv
@@ -120,32 +115,17 @@ func (p Purchase) Deposit(w http.ResponseWriter) {
 	 		WHERE
 	 			card_number = $1
 	 		AND card_cv = $2
-
-	`, p.Card, p.CvNumber)
-
-	err = row.Scan(
-		&purchaseInfo.Balance,
-		&purchaseInfo.Card,
-		&purchaseInfo.CvNumber,
-	)
-	logr.CheckDBErr(err)
-
-	refound := purchaseInfo.Balance + p.Refound
-
-	_, err = tx.Exec(`
+	 		`
+	updateStm := `
 	 		UPDATE
 	 			checking_acc_type
 	 		SET
 	 			balance = $1
 	 		WHERE
 	 			card_number = $2 AND card_cv = $3
-			`, refound, purchaseInfo.Card, purchaseInfo.CvNumber,
-	)
-	logr.CheckDBErr(err)
-	log.Println("REFOUND WAS MADE.")
-
-	err = tx.Commit()
-	logr.CheckDBErr(err)
+	 		`
+	transaction.makeDepo(retriveStm, updateStm, w)
+	logr.LogSuccess("Refoun inside method with success.")
 
 }
 
