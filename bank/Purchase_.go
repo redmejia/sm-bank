@@ -32,7 +32,7 @@ func makePurchase(t *Purchase, retriveQuery, updateQuery string, w http.Response
 	} else {
 
 		if clientInfo.Balance == 0 {
-			log.Panicln("Balance of cero ")
+			log.Println("Balance of cero")
 		} else if clientInfo.Balance < t.PurchaseAmount {
 			log.Println("balance is less than amount")
 		} else if clientInfo.Balance > t.PurchaseAmount {

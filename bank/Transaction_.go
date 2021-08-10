@@ -116,7 +116,7 @@ func (t Transaction) makeWithdraw(retriveQuery, updateQuery string, w http.Respo
 	logr.CheckDBErr(err)
 	defer tx.Rollback()
 
-	row := tx.QueryRow(retriveQuery, t.Card)
+	row := tx.QueryRow(retriveQuery, t.Card, t.CvNumber)
 
 	var clientInfo Transaction
 	err = row.Scan(
@@ -179,7 +179,7 @@ func (t Transaction) Withdraw(w http.ResponseWriter) {
 	  		FROM
 	  			checking_acc_type
 	  		WHERE
-	  			card_number = $1
+	  			card_number = $1 AND card_cv = $2
 	  		`
 		updateStm := `
 	  		UPDATE
@@ -187,10 +187,31 @@ func (t Transaction) Withdraw(w http.ResponseWriter) {
 	  		SET
 	  			balance = $1
 	  		WHERE
-	  			card_number = $2
+				card_number = $2 AND  cv_number $3
 	  		`
 		t.makeWithdraw(retriveStm, updateStm, w)
 		// makeWithdraw(&t, retriveStm, updateStm, w)
+	case "saving":
+		retriveStm := `
+	  		SELECT
+	  			balance,
+	  			card_number,
+	  			card_cv
+	  		FROM
+				saving_acc_type
+	  		WHERE
+	  			card_number = $1 AND card_cv = $2
+	  		`
+		updateStm := `
+	  		UPDATE
+				saving_acc_type
+	  		SET
+	  			balance = $1
+	  		WHERE
+				card_number = $2 AND  cv_number $3
+	  		`
+		t.makeWithdraw(retriveStm, updateStm, w)
+
 	}
 }
 
