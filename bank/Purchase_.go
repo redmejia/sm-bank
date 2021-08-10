@@ -103,7 +103,6 @@ func (p Purchase) Withdraw(w http.ResponseWriter) {
 
 // Deposit an order were cancel, the refound amount will be deposit to checking account
 func (p Purchase) Deposit(w http.ResponseWriter) {
-	logr := logers.NewLogers()
 	var transaction = Transaction{Card: p.Card, CvNumber: p.CvNumber, Amount: p.Refound}
 	retriveStm := `
 	 		SELECT
@@ -125,8 +124,6 @@ func (p Purchase) Deposit(w http.ResponseWriter) {
 	 			card_number = $2 AND card_cv = $3
 	 		`
 	transaction.makeDepo(retriveStm, updateStm, w)
-	logr.LogSuccess("Refoun inside method with success.")
-
 }
 
 //Save

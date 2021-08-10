@@ -81,7 +81,6 @@ func (t Transaction) Deposit(w http.ResponseWriter) {
 	 			card_number = $2 AND card_cv = $3
 	 		`
 		t.makeDepo(retriveStm, updateStm, w)
-		// makeDepo(retriveStm, updateStm, w)
 
 	case "saving":
 		retriveStm := `
@@ -105,7 +104,6 @@ func (t Transaction) Deposit(w http.ResponseWriter) {
 	 		`
 
 		t.makeDepo(retriveStm, updateStm, w)
-		// makeDepo(&t, retriveStm, updateStm, w)
 	}
 }
 
@@ -190,7 +188,7 @@ func (t Transaction) Withdraw(w http.ResponseWriter) {
 				card_number = $2 AND  cv_number $3
 	  		`
 		t.makeWithdraw(retriveStm, updateStm, w)
-		// makeWithdraw(&t, retriveStm, updateStm, w)
+
 	case "saving":
 		retriveStm := `
 	  		SELECT
