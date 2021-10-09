@@ -8,9 +8,9 @@ The account endpoint for creating new client accounts. These accounts include th
 ```
 	http://127.0.0.1:8081/v1/account
 ```
-# Transactions
+# Transactions endpoints
 
-## Deposit
+## deposit
 The deposit for making a  transaction of type deposit. The client has two options to deposit on the savings or checking accounts.
 ```
 	http://127.0.0.1:8081/v1/deposit/transaction
