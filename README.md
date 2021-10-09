@@ -5,13 +5,14 @@ The Small Bank is a REST-API project written in Go. On this project, I wanted to
 
 ## account
 The account endpoint for creating new client accounts. These accounts include the creation of saving and checking accounts, also card numbers and CVV numbers are created for new users.
-http://127.0.0.1:8081/v1/account
- 
+```
+	http://127.0.0.1:8081/v1/account
+```
 # Transactions
 
 ## Deposit
 The deposit for making a  transaction of type deposit. The client has two options to deposit on the savings or checking accounts.
-http://127.0.0.1:8081/v1/deposit
+http://127.0.0.1:8081/v1/deposit/transaction
  
 ## withdraw
 the withdrawal for making a new transaction of type withdraw. Same as the deposit client can withdraw from saving and checking accounts.
